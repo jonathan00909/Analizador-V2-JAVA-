@@ -1,12 +1,14 @@
 package Visual;
 
 import javax.swing.*;
-
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import javax.swing.table.DefaultTableModel;
-
 
 public class Menu extends JFrame implements ActionListener {
     private JTextArea entradaField;
@@ -32,6 +34,7 @@ public class Menu extends JFrame implements ActionListener {
 
         JPanel codigoFuentePanel = new JPanel();
         traerCodigoFuenteButton = new JButton("Abrir fuente");
+        traerCodigoFuenteButton.addActionListener(this);
         codigoFuentePanel.add(traerCodigoFuenteButton);
         panelSuperior.add(codigoFuentePanel, BorderLayout.WEST);
 
@@ -85,7 +88,27 @@ public class Menu extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // Aquí iría la lógica, pero se ha eliminado para dejar solo la parte visual.
+        if (e.getSource() == traerCodigoFuenteButton) {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto (.txt)", "txt"));
+
+            int returnValue = fileChooser.showOpenDialog(null);
+
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                try {
+                    BufferedReader reader = new BufferedReader(new FileReader(selectedFile));
+                    String line;
+                    entradaField.setText(""); // Limpia el área de texto antes de cargar el nuevo archivo.
+                    while ((line = reader.readLine()) != null) {
+                        entradaField.append(line + "\n"); // Agrega el contenido del archivo al área de texto.
+                    }
+                    reader.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
 
     
