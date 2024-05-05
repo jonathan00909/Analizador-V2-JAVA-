@@ -1,0 +1,9 @@
+int main() {
+	float PROMEDIO;
+	int precio;
+	precio = 10;
+	promedio = 20;
+	if(promedio < precio){
+		promedio = promedio + precio
+	}
+}
